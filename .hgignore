@@ -1,0 +1,8 @@
+syntax: glob
+tmp/*
+*.swp
+*.swo
+.rvmrc
+.vimrc
+.redcar/*
+
