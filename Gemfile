@@ -1,6 +1,6 @@
 source :rubygems
 
 group :develpment do
-  gem "rocco"
+  gem "rocco", "~>0.7.0"
   gem "aruba"
 end
