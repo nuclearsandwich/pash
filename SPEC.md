@@ -46,7 +46,7 @@
 		seconds)
 	- `TIMEMAX=250` (programs can't run for more than 250 seconds)
 
-- User should be able to iterate te execution of one or more commands as
+- User should be able to iterate the execution of one or more commands as
 	follows: `for (n=0;m < MAX; n++)\n com1; com2; ...; forend`
 
 - User should be able to set and unset shell variables and use them in command
