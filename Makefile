@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -g -I.
 
 sh142: main.c
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ -lreadline $^ $(CFLAGS)
 
 readspew: readspew.c
 	$(CC) -o $@ -lreadline $^ $(CFLAGS)

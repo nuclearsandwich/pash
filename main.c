@@ -1,13 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "input_reader.h"
+#include "environment_table.h"
+
+#define PROMPT_STRING "sh142$ "
+#define loop while(1)
 
 void process_command(char *command_with_args);
-char * readcommand();
 
 int main() {
-	int loop = 1;
-	while (loop) {
-		process_command(readcommand());
-		loop = 0;
+	loop {
+		process_command("echo Hello World!");
+		exit(12);
 	}
 
 	return 0;
@@ -16,10 +20,5 @@ int main() {
 void process_command(char *command_with_args) {
 	printf("proccessing command %s\n", command_with_args);
 	return;
-}
-
-char * readcommand() {
-	printf("reading from STDIN\n");
-	return "the command from STDIN";
 }
 
