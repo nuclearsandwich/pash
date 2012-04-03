@@ -1,0 +1,22 @@
+% 0.-Team members.
+% 1.-Overview diagram of the modules to be included in your program. Flow digram.
+% 2.-Enumeration of the APIs of each module.
+% 3.-Work plan with dependencies and responsible person for each item and their time estimates.
+% 4.-Test plan.
+% What should be on my research report progress report? (Maximum 2 pages!!!)
+% 1.-Work plan showing time dedicated for each section and estimated completion time.
+% 2.-Bibliography used.
+
+\documentclass{article}
+
+
+\title{Programming Project Progress Report}
+\date{\today}
+\author{Sean C \and Nick LeClair \and Steven! Lorenzen}
+
+
+\begin{document}
+\maketitle
+
+\end{document}
+
