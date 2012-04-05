@@ -1,20 +1,21 @@
 syntax: glob
 
 # Temp and Project files
-tmp/*
-*.swp
 *.swo
+*.swp
+.redcar/*
 .rvmrc
 .vimrc
-.redcar/*
+tmp/*
 
-# Executable detritus
-sh142
+# Build artifacts
 exitwith
-succeed
 fail
+makeout
+sh142
+succeed
 
 # LaTeX miscellany
-REPORT.log
 REPORT.aux
+REPORT.log
 

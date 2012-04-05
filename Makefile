@@ -17,12 +17,12 @@ REPORT.pdf: REPORT.latex modules.png
 	pdflatex REPORT.latex
 
 cuke:
-	cucumber features/
+	cucumber features/ -t ~@skipme
 
 # Eventually extend to also run cunit tests.
 test: testutils cuke
 
-testutils: exitwith succeed fail
+testutils: exitwith succeed fail makeout
 
 clean:
 	rm *.o sh142
