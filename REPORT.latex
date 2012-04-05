@@ -1,7 +1,3 @@
-% 0.-Team members.
-% 2.-Enumeration of the APIs of each module.
-% 3.-Work plan with dependencies and responsible person for each item and their time estimates.
-% 4.-Test plan.
 % What should be on my research report progress report? (Maximum 2 pages!!!)
 % 1.-Work plan showing time dedicated for each section and estimated completion time.
 % 2.-Bibliography used.
@@ -19,11 +15,36 @@
 % 1.-Overview diagram of the modules to be included in your program. Flow digram.
 \section{Modules in sh142}
 
+Our implementation of sh142 will include multiple modules broken up by task
+responsibility.
+
+Our main modules deal with input reading, program execution, and networking.
+Each of those main modules has submodules for more finely grained
+implementation details.
+
+The figure below details our dependency graph.
+
 \begin{center}
-\includegraphics[width=10in]{modules.png}
+\includegraphics[width=12cm]{modules.png}
 \end{center}
 
+% 2.-Enumeration of the APIs of each module.
+\section{Main Module APIs}
+
+\subsection{input\_reader}
+\begin{enumerate}
+	\item[\texttt{char* readline(char*)}] A thin wrapper around GNU Readline.
+\end{enumerate}
+
+\subsection{input\_tokenizer}
+\begin{enumerate}
+	\item[\texttt{char*[] tokenize(char*)}] Break the input up into individual
+		tokens separated by whitespace. Quoted bodies are kept together with quoting
+		stripped.
+\end{enumerate}
 
 
+% 3.-Work plan with dependencies and responsible person for each item and their time estimates.
+% 4.-Test plan.
 \end{document}
 
