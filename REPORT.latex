@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage{fullpage}
+
 
 \title{Programming Project Progress Report}
 \date{\today}
@@ -27,52 +29,75 @@ The figure below details our dependency graph.
 \section{Main Module APIs}
 
 \subsection{input\_reader}
-\begin{enumerate}
-	\item[\texttt{char* readline(char*)}] A thin wrapper around GNU Readline.
-\end{enumerate}
+\begin{itemize}
+	\item \texttt{char* readline(char*)} - A thin wrapper around GNU Readline.
+\end{itemize}
 
 \subsection{input\_tokenizer}
-\begin{enumerate}
-	\item[\texttt{char*[] tokenize(char*)}] Break the input up into individual
+\begin{itemize}
+	\item \texttt{char*[] tokenize(char*)} - Break the input up into individual
 		tokens separated by whitespace. Quoted bodies are kept together with quoting
 		stripped.
-\end{enumerate}
+\end{itemize}
 
 \subsection{command\_runner}
-\begin{enumerate}
-	\item[\texttt{void invoke\_command(char*[])}] Invoke the tokenized command as
+\begin{itemize}
+	\item \texttt{void invoke\_command(char*[])} - Invoke the tokenized command as
 		a sh142 command. This is the stage where input will be parsed before being
 		delegated elsewhere.. for-loop expansion and PATH and DATA lookup will also be
 		substituted here.
-\end{enumerate}
+\end{itemize}
 
 \subsection{path\_lookup}
-\begin{enumerate}
-	\item[\texttt{char* resolve\_data(char*)}] \hfill \\
+\begin{itemize}
+	\item \texttt{char* resolve\_data(char*)} -
 		Test for presence of filename in the specified DATA path. If, present
 		return the absolute path to the file otherwise NULL.
 
-	\item[\texttt{char* resolve\_executable(char*)}] \hfill \\
+	\item \texttt{char* resolve\_executable(char*)} -
 		Test for presence of filename in the specified PATH variable. If present
 		return the absolute path to the file otherwise NULL.
-
-\end{enumerate}
+\end{itemize}
 
 \subsection{program\_caller}
-\begin{enumerate}
-	\item[\texttt{int runcmd(char* cmd, char* argv[])}] \hfill \\
+\begin{itemize}
+	\item \texttt{int runcmd(char* cmd, char* argv[])} -
 		Run the command with the given arguments return the exit code of the
 		command.
-	\item[\texttt{int bgruncmd(char* cmd, char* argv[])}] \hfill \\
+	\item \texttt{int bgruncmd(char* cmd, char* argv[])} -
 		Run the command with the given arguments in the background, retyrn the pid
 		of the created job.
-\end{enumerate}
+\end{itemize}
 
 \subsection{network\_node}
 TBD
 
 \section{Work Plan}
 
+The work will primarily be broken up by module as given below:
+\begin{itemize}
+	\item input\_reader - \textsc{completed}
+	\item complete spec tests - All by April 7
+	\item program\_caller - Steven! by April 14
+	\item path\_lookup - Sean by April 14
+	\item input\_tokenizer - Nick by April 14
+	\item command\_runner - Sean and Steven! by April 21
+	\item main sh142 - Nick and Steven! by April 21
+	\item network\_node - Nick and Sean by April 28
+	\item report - All by May 8
+\end{itemize}
+
 \section{Test Plan}
+
+Testing will be carried out at every stage of development. Prior to designing
+the API, a test harness for complete automated interaction testing was set up
+using the Cucumber tool. As we build the API we will be using the ctest unit-test
+framework to perform isolated tests on individual C functions.
+
+A sample of cucumber output:
+\begin{center}
+\includegraphics[width=10cm]{cuke.png}
+\end{center}
+
 \end{document}
 
