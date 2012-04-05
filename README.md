@@ -26,6 +26,28 @@ Writing this for a class. Who knows when it will be open-sourced. Using
 [Valgrind]:http://valgrind.org/
 [GNU Make]: http://www.gnu.org/software/make/
 
-# TODO #
+Writing Cucumber Specs
+----------------------
 
-Create bootstrap script to get meta-dependencies installed.
+Because we're good developers, we're writing pretty comprehensive tests to prove
+or disprove our hypotheses about whether our software works. We've chosen
+Cucumber and Aruba to do this in the most expressive and automated way possible.
+
+For details on the language of Cucumber see existing examples in the `features/`
+directory and the documentation of available "steps"
+[here](https://github.com/cucumber/aruba/blob/master/lib/aruba/cucumber.rb).
+
+
+
+C and UNIX Library Commands of Note
+-----------------------------------
+
+I've listed them below in the form necessary to look them up in the system
+manual
+
+- `man 3 getenv` For accessing environment variables.
+- `man 3 setenv` For setting environment variables.
+- `man 3 freopen` For reifying streams for redirection.
+- `man 3 fprint` For printing to streams other than stdout.
+- `posix_spawn` A possible way to easily run stuff in background.
+
