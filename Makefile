@@ -13,6 +13,9 @@ echo.o: echo.c
 modules.png: modules.dot
 	dot $^ -Tpng >$@
 
+REPORT.pdf: REPORT.latex modules.png
+	pdflatex REPORT.latex
+
 cuke:
 	cucumber features/
 

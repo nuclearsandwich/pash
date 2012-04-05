@@ -1,5 +1,4 @@
 % 0.-Team members.
-% 1.-Overview diagram of the modules to be included in your program. Flow digram.
 % 2.-Enumeration of the APIs of each module.
 % 3.-Work plan with dependencies and responsible person for each item and their time estimates.
 % 4.-Test plan.
@@ -8,15 +7,23 @@
 % 2.-Bibliography used.
 
 \documentclass{article}
+\usepackage{graphicx}
 
 
 \title{Programming Project Progress Report}
 \date{\today}
-\author{Sean C \and Nick LeClair \and Steven! Lorenzen}
-
-
+\author{Sean Canavan \and Nick LeClair \and Steven! Lorenzen}
 \begin{document}
 \maketitle
+
+% 1.-Overview diagram of the modules to be included in your program. Flow digram.
+\section{Modules in sh142}
+
+\begin{center}
+\includegraphics[width=10in]{modules.png}
+\end{center}
+
+
 
 \end{document}
 
