@@ -1,10 +1,5 @@
-% What should be on my research report progress report? (Maximum 2 pages!!!)
-% 1.-Work plan showing time dedicated for each section and estimated completion time.
-% 2.-Bibliography used.
-
 \documentclass{article}
 \usepackage{graphicx}
-
 
 \title{Programming Project Progress Report}
 \date{\today}
@@ -43,8 +38,41 @@ The figure below details our dependency graph.
 		stripped.
 \end{enumerate}
 
+\subsection{command\_runner}
+\begin{enumerate}
+	\item[\texttt{void invoke\_command(char*[])}] Invoke the tokenized command as
+		a sh142 command. This is the stage where input will be parsed before being
+		delegated elsewhere.. for-loop expansion and PATH and DATA lookup will also be
+		substituted here.
+\end{enumerate}
 
-% 3.-Work plan with dependencies and responsible person for each item and their time estimates.
-% 4.-Test plan.
+\subsection{path\_lookup}
+\begin{enumerate}
+	\item[\texttt{char* resolve\_data(char*)}] \hfill \\
+		Test for presence of filename in the specified DATA path. If, present
+		return the absolute path to the file otherwise NULL.
+
+	\item[\texttt{char* resolve\_executable(char*)}] \hfill \\
+		Test for presence of filename in the specified PATH variable. If present
+		return the absolute path to the file otherwise NULL.
+
+\end{enumerate}
+
+\subsection{program\_caller}
+\begin{enumerate}
+	\item[\texttt{int runcmd(char* cmd, char* argv[])}] \hfill \\
+		Run the command with the given arguments return the exit code of the
+		command.
+	\item[\texttt{int bgruncmd(char* cmd, char* argv[])}] \hfill \\
+		Run the command with the given arguments in the background, retyrn the pid
+		of the created job.
+\end{enumerate}
+
+\subsection{network\_node}
+TBD
+
+\section{Work Plan}
+
+\section{Test Plan}
 \end{document}
 
