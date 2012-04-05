@@ -7,4 +7,6 @@ tmp/*
 .redcar/*
 sh142
 exitwith
+succeed
+fail
 

@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "command_parser.h"
-#include "environment_table.h"
+#include "command_runner.h"
 #include "input_reader.h"
-#include "path_lookup.h"
-#include "program_caller.h"
 
 #define PROMPT_STRING "sh142$ "
 #define loop while(1)

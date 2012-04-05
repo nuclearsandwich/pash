@@ -1,15 +1,14 @@
 digraph Modules {
 main -> {
-	input_reader command_parser program_caller
-	environment_table path_lookup
+	input_reader
+	network_node
+	command_runner
 }
 
-input_reader -> GNUReadline
-command_parser
+input_reader -> { GNUReadline input_tokenizer }
+command_runner -> { input_tokenizer program_caller path_lookup }
 program_caller
-environment_table
 path_lookup
-GNUReadline
 network_node
 }
 

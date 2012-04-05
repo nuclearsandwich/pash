@@ -10,11 +10,16 @@ readspew: readspew.c
 echo.o: echo.c
 	$(CC) -o $@ -lreadline $^ $(CFLAGS)
 
+modules.png: modules.dot
+	dot $^ -Tpng >$@
+
 cuke:
 	cucumber features/
 
 # Eventually extend to also run cunit tests.
-test: cuke
+test: testutils cuke
+
+testutils: exitwith succeed fail
 
 clean:
 	rm *.o sh142
