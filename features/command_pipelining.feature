@@ -4,6 +4,7 @@ Feature: Command pipelining
 
 	Scenario: piping one command's output to another
 		When I type "echo foo bar baz | cut -d' ' -f2"
+		And I type "exit"
 		Then the stdout should contain exactly:
 		"""
 		bar
@@ -11,6 +12,7 @@ Feature: Command pipelining
 
 	Scenario: chaining multiple commands
 		When I type "echo the rain in Spain | cut -d' ' -f3 | wc -c"
+		And I type "exit"
 		Then the stdout should contain exactly:
 		"""
 		2

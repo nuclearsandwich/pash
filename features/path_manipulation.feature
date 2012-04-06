@@ -8,6 +8,7 @@ Feature: PATH and DATA manipulation
 		When I run `sh142` interactively
 		And I type "PATH=./mybin:$PATH"
 		And I type "myprg"
+		And I exit
 		Then the stdout should contain "my program"
 
 	Scenario: Altering the DATA path of the running shell.
@@ -19,5 +20,6 @@ Feature: PATH and DATA manipulation
 		When I run `sh142` interactively
 		And I type "DATA=./mydata:$DATA"
 		And I type "cut -d, -f2 #D:food"
+		And I exit
 		Then the stdout should contain "candy"
 

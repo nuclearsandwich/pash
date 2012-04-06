@@ -12,5 +12,6 @@ Feature: Test config file loading
 		When I cd to "config_files"
 		And I run `sh142` interactively
 		And I type "echo $CONVAR $ANOTHER_VAR"
+		And I exit
 		Then the stdout should contain "test_value test_value2"
 
