@@ -9,10 +9,10 @@
 void process_command(char *command_with_args);
 
 int main() {
+	char *input;
 	loop {
-
-		process_command("echo Hello World!");
-		exit(12);
+		input = readline(PROMPT_STRING);
+		process_command(input);
 	}
 
 	return 0;
