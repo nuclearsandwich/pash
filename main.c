@@ -10,6 +10,7 @@ void process_command(char *command_with_args);
 
 int main() {
 	loop {
+
 		process_command("echo Hello World!");
 		exit(12);
 	}
@@ -21,4 +22,3 @@ void process_command(char *command_with_args) {
 	printf("proccessing command %s\n", command_with_args);
 	return;
 }
-
