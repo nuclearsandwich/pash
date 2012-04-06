@@ -29,7 +29,6 @@ Feature: I/O redirection
 		"""
 
 	@skipme
-	# Not actually required. I might do it later
 	Scenario: redirect stderr to stdout
 		When I type "makeout err error output 2>&1"
 		Then the stderr should contain exactly:
