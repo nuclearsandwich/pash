@@ -1,14 +1,38 @@
 CC=gcc
-CFLAGS=-Wall -g -I.
+OBJ_DIR=obj
+INC_DIR=include
+SRC_DIR=src
+BIN_DIR=bin
+DYN_DIR=dylibs
+UTIL_DIR=test_utils
+LIB_DEPS=-lreadline
+CFLAGS=-Wall -g -I$(INC_DIR)
 
-sh142: main.c
-	$(CC) -o $@ -lreadline $^ $(CFLAGS)
+testutils: $(patsubst $(UTIL_DIR)/$(SRC_DIR)/%.c,$(UTIL_DIR)/%,$(wildcard $(UTIL_DIR)/$(SRC_DIR)/*.c))
 
-readspew: readspew.c
-	$(CC) -o $@ -lreadline $^ $(CFLAGS)
+examples: $(patsubst examples/$(SRC_DIR)/%.c,examples/%,$(wildcard examples/$(SRC_DIR)/*.c))
 
-echo.o: echo.c
-	$(CC) -o $@ -lreadline $^ $(CFLAGS)
+dylibs: $(DYN_DIR)/test_function.so
+
+$(BIN_DIR)/sh142: $(SRC_DIR)/main.c
+	$(CC) -o $@ $(LIB_DEPS) $^ $(CFLAGS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(DYN_DIR)/%.so: $(SRC_DIR)/%.c
+	$(CC) -fPIC -shared -Wl,-soname,$@ -o $@ $<
+
+$(UTIL_DIR)/%: $(UTIL_DIR)/$(SRC_DIR)/%.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+test: testutils cuke
+
+unit: dylibs
+	ruby -r"rake" -r"rake/testtask" -e"Rake::TestTask.new; Rake::Task[:test].invoke"
+
+cuke:
+	cucumber features/ -t ~@skipme
 
 modules.png: modules.dot
 	dot $^ -Tpng >$@
@@ -16,16 +40,9 @@ modules.png: modules.dot
 REPORT.pdf: REPORT.latex modules.png
 	pdflatex REPORT.latex
 
-cuke:
-	cucumber features/ -t ~@skipme
-
-# Eventually extend to also run cunit tests.
-test: testutils cuke
-
-testutils: exitwith succeed fail makeout
-
 clean:
-	rm *.o sh142
+	# Cleaning _NEVER_ fails.
+	rm *.o sh142 obj/* bin/* examples/* test_utils/* &>/dev/null && exit 0 || exit 0
 
-.PHONY: clean cuke test
+.PHONY: clean cuke test testutils unit
 

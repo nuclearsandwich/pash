@@ -8,14 +8,12 @@ syntax: glob
 .vimrc
 tmp/*
 
-# Build artifacts
-exitwith
-fail
-makeout
-sh142
-succeed
+bin/*
+dylibs/*
+examples/*
+obj/*
+test_utils/*
 
 # LaTeX miscellany
-REPORT.aux
-REPORT.log
-
+report/REPORT.aux
+report/REPORT.log

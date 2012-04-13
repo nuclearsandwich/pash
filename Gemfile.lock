@@ -40,4 +40,5 @@ PLATFORMS
 
 DEPENDENCIES
   aruba
+  ffi
   rocco (~> 0.7.0)
