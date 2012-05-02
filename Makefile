@@ -12,7 +12,7 @@ testutils: $(patsubst $(UTIL_DIR)/$(SRC_DIR)/%.c,$(UTIL_DIR)/%,$(wildcard $(UTIL
 
 examples: $(patsubst examples/$(SRC_DIR)/%.c,examples/%,$(wildcard examples/$(SRC_DIR)/*.c))
 
-dylibs: $(DYN_DIR)/test_function.so
+dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/path_lookup.so
 
 $(BIN_DIR)/sh142: $(SRC_DIR)/main.c
 	$(CC) -o $@ $(LIB_DEPS) $^ $(CFLAGS)
