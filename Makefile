@@ -17,7 +17,7 @@ examples: $(patsubst examples/$(SRC_DIR)/%.c,examples/%,$(wildcard examples/$(SR
 examples/%: examples/src/%.c
 	$(CC) $(OBJ_DIR)/* $^ $(CFLAGS) $(LIB_DEPS) -o $@
 
-dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/frs.so
+dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/path_lookup.so
 
 $(BIN_DIR)/sh142: $(SRC_DIR)/main.c
 	$(CC) $(LIB_DEPS) $^ $(CFLAGS) -o $@
