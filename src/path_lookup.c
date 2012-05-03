@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h> // angle brackets signify library code
-#include "../include/path_lookup.h" // quotes signify your local code
+#include "../include/path_lookup.h" // quotes signify you	r local code
 #include <sys/types.h>
 #include <stdio.h>
 
@@ -16,14 +16,13 @@ char* searchPath(char* inputPath, char* inputExecutableName)
 	dir = opendir (inputPath);
 	if (dir != NULL) 
 	{
-	  while ((ent = readdir (dir)) != NULL) /* print all the files and directories within directory */
+	  while ((ent = readdir (dir)) != NULL)
 	  {
 		if (strlen(ent->d_name) == strlen(inputPath) && !strcmp(ent->d_name, inputExecutableName))  // if the length of the current file and the name are the same
         {
         	(void)closedir(dir); // close the file handle
             return ent->d_name; // return the current file name
         }
-	    	printf("%s\n", ent->d_name);
 	  }
 	  closedir(dir);
 	} 
