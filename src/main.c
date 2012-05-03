@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <readline/readline.h>
 #include "command_runner.h"
-#include "input_reader.h"
 
+/* The prompt string printed by Readline */
 #define PROMPT_STRING "sh142$ "
+/* The maximum number of tokens per input line */
+#define MAXTOKENS 64
+#define MAXTOKLEN 32
 
+void parsecommand(int tokenc, char *tokens[], char* input);
 void process_command(char *command_with_args);
 
 int main() {
@@ -18,7 +24,6 @@ int main() {
 		}
 		process_command(input);
 	}
-
 	return 0;
 }
 
