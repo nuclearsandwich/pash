@@ -16,7 +16,7 @@ char * echo() {
 }
 
 char *prompt_string(char *prompt_template, int line_count) {
-	char *ps;
+	char *ps = "";
 	sprintf(ps, prompt_template, line_count);
 	return ps;
 }

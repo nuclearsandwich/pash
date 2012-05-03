@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "command_runner.h"
 #include "input_reader.h"
 
 #define PROMPT_STRING "sh142$ "
-#define loop while(1)
 
 void process_command(char *command_with_args);
 
 int main() {
 	char *input;
-	loop {
+	while(1) {
 		input = readline(PROMPT_STRING);
+		/* Break out when the user exits. */
+		if (input == NULL || strcmp(input, "exit") == 0) {
+			exit(0);
+		}
 		process_command(input);
 	}
 
@@ -19,6 +23,6 @@ int main() {
 }
 
 void process_command(char *command_with_args) {
-	printf("proccessing command %s\n", command_with_args);
-	return;
+	system(command_with_args);
 }
+
