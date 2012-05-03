@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 int main() {
-	int return_value;
+	int return_value = -24; // was previously uninitialized
 
 	printf("Forking process!\n");
 	fork();
