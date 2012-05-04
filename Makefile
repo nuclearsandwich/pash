@@ -14,13 +14,17 @@ testutils: $(patsubst $(UTIL_DIR)/$(SRC_DIR)/%.c,$(UTIL_DIR)/%,$(wildcard $(UTIL
 
 examples: $(patsubst examples/$(SRC_DIR)/%.c,examples/%,$(wildcard examples/$(SRC_DIR)/*.c))
 
+dependencies: $(INC_DIR)/tokenizer.h $(INC_DIR)/parser.h $(INC_DIR)/interpreter.h $(OBJ_DIR)/tokenizer.o $(OBJ_DIR)/parser.o $(OBJ_DIR)/interpreter.o 
+
+
+
 examples/%: examples/src/%.c
 	$(CC) $(OBJ_DIR)/* $^ $(CFLAGS) $(LIB_DEPS) -o $@
 
 dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/path_lookup.so
 
-$(BIN_DIR)/sh142: $(SRC_DIR)/main.c
-	$(CC) $(LIB_DEPS) $^ $(CFLAGS) -o $@
+$(BIN_DIR)/sh142: $(SRC_DIR)/main.c dependencies
+	$(CC) obj/* $(LIB_DEPS) $(SRC_DIR)/main.c $(CFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/%.h
 	$(CC) -c $< $(CFLAGS) -o $@
