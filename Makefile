@@ -22,10 +22,7 @@ dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/path_lookup.so
 $(BIN_DIR)/sh142: $(SRC_DIR)/main.c
 	$(CC) $(LIB_DEPS) $^ $(CFLAGS) -o $@
 
-$(SRC_DIR)/%.c: $(INC_DIR)/%.h
-	$(CC) -c $< $(CFLAGS) -o $@
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/%.h
 	$(CC) -c $< $(CFLAGS) -o $@
 
 $(DYN_DIR)/%.so: $(SRC_DIR)/%.c
