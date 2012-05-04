@@ -3,16 +3,13 @@
 #include <string.h>
 
 #include <readline/readline.h>
-#include "command_runner.h"
+#include "../include/tokenizer.h"
+#include "../include/parser.h"
+#include "../include/interpreter.h"
 
 /* The prompt string printed by Readline */
 #define PROMPT_STRING "sh142$ "
-/* The maximum number of tokens per input line */
-#define MAXTOKENS 64
-#define MAXTOKLEN 32
 
-void parsecommand(int tokenc, char *tokens[], char* input);
-void process_command(char *command_with_args);
 
 int main() {
 	char *input;
@@ -22,12 +19,8 @@ int main() {
 		if (input == NULL || strcmp(input, "exit") == 0) {
 			exit(0);
 		}
-		process_command(input);
+		interpret(parse(tokenize(input)));
 	}
 	return 0;
-}
-
-void process_command(char *command_with_args) {
-	system(command_with_args);
 }
 
