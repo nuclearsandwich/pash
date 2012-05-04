@@ -14,7 +14,7 @@
 /* Actual parsing functions */
 ast_node *parse(strlist *tokens);
 ast_node *parse_command_sequence(strlist *tokens);
-/* ast_nodelist *parse_arglist(strlist *tokens); */
+ast_nodelist *parse_arglist(strlist *tokens);
 
 /* strlist *destroy_head(strlist *list); */
 
