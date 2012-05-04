@@ -22,7 +22,7 @@ struct node {
 
 struct nodelist {
 	ast_node node;
-	ast_node *next;
+	ast_nodelist *next;
 };
 
 struct sllist {
