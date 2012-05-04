@@ -1,4 +1,7 @@
+#ifndef SH142TYPES
 #include "./sh142types.h"
+#endif
+
 /* The parser takes an input array of tokens and builds an
  * Abstract Syntax Tree for the following Grammar
  * CommandSequence ::= Command [Arglist]

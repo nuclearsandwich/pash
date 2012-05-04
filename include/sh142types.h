@@ -1,3 +1,5 @@
+/* Protect from multiple inclusion */
+#define SH142TYPES
 /* The maximum size of a single token. */
 #define MAX_TOKEN_LENGTH 64
 
