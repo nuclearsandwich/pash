@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include "../include/interpreter.h"
 
 void interpret(ast_node *root) {
@@ -11,7 +12,8 @@ void interpret(ast_node *root) {
 }
 
 void interpret_command(ast_node* command) {
-	int argc = 0;
+	int cmdstats, argc = 0;
+	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
 	ast_nodelist *arg = command->children;
 	/* Build the values to pass to execvp */
@@ -24,5 +26,12 @@ void interpret_command(ast_node* command) {
 	}
 	/* Null-terminate the list as per execvp's documentation. */
 	argv[argc] = NULL;
-	execvp(command->token, argv);
+	cmdpid = fork();
+	if (!cmdpid)  {
+		execvp(command->token, argv);
+	} else {
+		waitpid(cmdpid, &cmdstats, 0);
+	}
+	return;
 }
+
