@@ -7,15 +7,27 @@
  * CommandSequence ::= Command [Arglist]
  * CommandSequence ::= Command [Arglist] || CommandSequence
  * CommandSequence ::= Command [Arglist] && CommandSequence
- * Command ::= Command | NegatedCommand
- * Arglist ::= Argument [ Arglist ]
+ * Command ::= Command | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
+ * NegatedCommand ::= ! Command
+ * BackgroundCommand ::= Command &
+ * BooleanCommand ::= AndedCommand | OrredCommand
+ * AndedCommand ::= Command && Command
+ * OrredCommand ::= Command || Commmand
+ * Arglist ::= Arg [ Arglist ]
+ * Arg ::= Variable | Value
+ * Variable ::= $Value
  */
 
-/* Actual parsing functions */
-ast_node *parse(strlist *tokens);
-ast_node *parse_command_sequence(strlist *tokens);
-ast_nodelist *parse_arglist(strlist *tokens);
+strlist *tokens;
 
-/* strlist *destroy_head(strlist *list); */
+/* Actual parsing functions */
+ast_node *parse(void);
+ast_node *parse_command_sequence(void);
+ast_nodelist *parse_arglist(void);
+ast_node *parse_arg(void);
+ast_node *parse_variable(void);
+ast_node *parse_value(void);
+
+void strip_head(void);
 
 

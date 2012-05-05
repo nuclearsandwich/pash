@@ -4,7 +4,7 @@
 #define MAX_TOKEN_LENGTH 64
 
 /* Different types of tokens!!!! */
-typedef enum { END, COMMAND, ARG } node_types;
+typedef enum { COMMAND, VALUE, VARIABLE } node_types;
 
 /* Since we have mutually recursive structures, we need to use forward
  * declaration and thus, cannot omit the struct name.
@@ -21,7 +21,7 @@ struct node {
 };
 
 struct nodelist {
-	ast_node node;
+	ast_node *node;
 	ast_nodelist *next;
 };
 

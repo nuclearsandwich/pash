@@ -19,7 +19,8 @@ int main() {
 		if (input == NULL || strcmp(input, "exit") == 0) {
 			exit(0);
 		}
-		interpret(parse(tokenize(input)));
+		tokens = tokenize(input);
+		interpret(parse());
 	}
 	return 0;
 }
