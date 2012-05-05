@@ -20,7 +20,7 @@ void interpret_command(ast_node* command) {
 	argv[argc] = command->token;
 	++argc;
 	while (arg != NULL) {
-		argv[argc] = arg->node.token;
+		argv[argc] = arg->node->token;
 		++argc;
 		arg = arg->next;
 	}
