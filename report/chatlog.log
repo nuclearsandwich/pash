@@ -1,0 +1,119 @@
+Offline	
+(3) Le,Steven,me
+Le
+Steven
+	
+ 
+	 	
+  Actions ▼
+ You have invited Le to this chat.
+ This is now a group chat. Add another person.
+ Le Clair, Nicolas has joined.
+ me:  no one pushed anythign yet?
+ Sent at 11:31 PM on Friday
+ me:  is this thing on?
+ Sent at 11:34 PM on Friday
+ Steven Ragnarök has joined.
+ Steven:  hey
+so
+I pushed a very primitive tokenizer+parser+interpreter
+Nick, the questions that you asked in email
+can basically be answered by comparing what you have to tokenizer.c
+ me:  i think Nick is afk
+ Steven:  I also switched away from using a fixed-length array
+and am using a linked list
+He can read when he gets back
+I am stuck for time
+there's a short in my power cable
+ me:  well that's unfortuante
+ Steven:  and of course, everyone I'm with is Mac OS only
+yeah
+fucking seriously
+ me:  i still can't build =\
+trying to figure that out
+ Steven:  build at all
+ me:  i can build examples
+ Steven:  or build your path_lookup
+ me:  because there's no readline reference
+ Steven:  gotcha
+try pulling latest
+I may have fixed some stuff
+ me:  abort: crosses branches
+ Steven:  wat?
+ me:  sean@ubuntu:~/Code/sh142$ hg update
+abort: crosses branches (merge branches or use --clean to discard changes)
+ Steven:  what changes have you made and are they important?
+ me:  just changed a couple lines in one file
+i can re do it
+ Steven:  k
+ me:  is it hg update --clean?
+ Steven:  yeah
+at least, I think os
+ me:  nice, no more readline error
+ Steven:  there are three new header, source pairs
+ me:  this did pop up though:
+
+src/interpreter.c:23:25: error: request for member ‘token’ in something not a structure or union
+make: * [obj/interpreter.o] Error 1
+ Sent at 11:50 PM on Friday
+ Steven:  ah
+just fixed that
+I'm going to dump a bunch of information into the channel while I still have power
+you can either use it to try and add more code
+or use it to write the report
+but unless I can borrow a Thinkpad power cord tomorrow, I'm basically boned until I get home to my spare on Sunday evening
+There are three new source/header pairs
+tokenizer, parser, and interpreter
+ Sent at 11:53 PM on Friday
+ Steven:  the tokenizer separates on spaces only
+ Sent at 11:55 PM on Friday
+ Steven:  I'm thinking for simplicity's sake, we will require spaces between all tokens
+unless we have time to extend the tokenizer later
+the parser is the first "tricky" part of the code
+in include/sh142types.h I define some compound data structers.
+The simplest is a strlist, a linked list of strings.
+Then there is also the ast_node and ast_nodelist
+ast stands for Abstract Syntax Tree
+basically, the parser takes the stream of input tokens
+and looks at one at a time to figure out where the next token fits into the parse
+this technique is called recursive descent parsing
+It is the simplest type of parser that can still work for a whole shell
+ Sent at 11:59 PM on Friday
+ me:  how can I make one thing at a time again? I tried make path_lookup.o
+
+The readline error came back after pulling
+ Steven:  After being turned into an abstract syntax tree, the ast is sent to be interpreted.
+if you think of the parsing phase as bundling everything up
+interpretation is unpacking it and playing with it
+make obj/path_lookup.o
+ Sent at 12:02 AM on Saturday
+ Steven:  Right now it's pretty primitive
+it can only run plain jane commands
+I was in the process of adding Variable expansion when I noticed the charging light wasn't own
+*on
+ Sent at 12:04 AM on Saturday
+ Steven:  There's a description of the grammar that I wanted to parse in parser by tonight is in parser.h
+haha
+can't sentence properly
+feel free to start on that
+if you want
+I'll let you know if I find a cord
+ Sent at 12:07 AM on Saturday
+ me:  okay
+shouldn't be too hard to find oen
+one*
+don't forget to check craigslist
+ Sent at 12:09 AM on Saturday
+ 
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+Pop-in

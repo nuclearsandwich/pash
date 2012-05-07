@@ -2,31 +2,33 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h> // angle brackets signify library code
-#include "../include/path_lookup.h" // quotes signify your local code
+// #include "path_lookup.h" // quotes signify your local code
 #include <sys/types.h>
 #include <stdio.h>
 
 const char* delimToken = ":";
+char* qualifiedPath;
 
 //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
 char* searchPath(char* inputPath, char* inputExecutableName)
 {
-	DIR *dir;
-	struct dirent *ent;
-	dir = opendir (inputPath);
-	if (dir != NULL) 
-	{
-	  while ((ent = readdir (dir)) != NULL) /* print all the files and directories within directory */
+	DIR *directory = opendir(inputPath);
+	struct dirent *entry = NULL;
+	if (directory == NULL) // if path was invalid
+		return NULL; 
+	  while((entry = readdir(directory))) /* print all the files and directories within directory */
 	  {
-		if (strlen(ent->d_name) == strlen(inputPath) && !strcmp(ent->d_name, inputExecutableName))  // if the length of the current file and the name are the same
+		if (strcmp(entry->d_name, inputExecutableName) == 0)  // if the strings are equal
         {
-        	(void)closedir(dir); // close the file handle
-            return ent->d_name; // return the current file name
+        	closedir(directory); // close the file handle
+            qualifiedPath = (char*) malloc(strlen(inputPath) + strlen(inputExecutableName)); // leave one extra space for the /
+            strcat(qualifiedPath, inputPath);
+            strcat(qualifiedPath, "/");
+            strcat(qualifiedPath, inputExecutableName);           
+            return qualifiedPath; // return the fully qualified path to the program
         }
-	    	printf("%s\n", ent->d_name);
 	  }
-	  closedir(dir);
-	} 
+	  closedir(directory);
 	return NULL;
 }	
 
