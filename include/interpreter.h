@@ -6,4 +6,6 @@
 void interpret(ast_node *root);
 
 void interpret_command(ast_node *command);
+char *interpret_variable(ast_node *variable);
+char *interpret_value(ast_node *value);
 

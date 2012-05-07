@@ -2,6 +2,7 @@
 #define SH142TYPES
 /* The maximum size of a single token. */
 #define MAX_TOKEN_LENGTH 64
+#define MAX_STRING_LENGTH 256
 
 /* Different types of tokens!!!! */
 typedef enum { COMMAND, VALUE, VARIABLE } node_types;
