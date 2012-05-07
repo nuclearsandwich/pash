@@ -4,10 +4,15 @@
 
 
 ast_node *parse() {
-	return parse_command_sequence();
+	int eql;
+	if ((eql = contains_eql(tokens->str)) != -1) {
+		return parse_var_assign(eql);
+	} else {
+		return parse_command();
+	}
 }
 
-ast_node *parse_command_sequence() {
+ast_node *parse_command() {
 	ast_node *command = malloc(sizeof(ast_node));
 	command->type = COMMAND;
 	strncpy(command->token, tokens->str, MAX_TOKEN_LENGTH);
@@ -71,9 +76,35 @@ ast_node *parse_variable() {
 	return variable;
 }
 
+ast_node *parse_var_assign(int eqlidx) {
+	ast_node *var_assign = malloc(sizeof(ast_node));
+	ast_nodelist *varname = malloc(sizeof(ast_nodelist));
+	ast_nodelist *value = malloc(sizeof(ast_nodelist));
+	var_assign->type = VARASSIGN;
+	var_assign->token[0] = '\0';
+	tokens->str[eqlidx] = '\0';
+	varname->node = parse_value();
+	strncpy(tokens->str, &tokens->str[eqlidx + 1], MAX_TOKEN_LENGTH - eqlidx);
+	value->node = parse_value();
+	varname->next = value;
+	return var_assign;
+}
+
+/* Helper Functions */
 void strip_head() {
 	strlist *head = tokens;
 	tokens = head->next;
 	free(head);
+}
+
+int contains_eql(char *str) {
+	int i;
+	for (i = 0; i < strlen(str); i++) {
+		if (str[i] == '=') {
+			return i;
+		}
+	}
+
+	return -1;
 }
 

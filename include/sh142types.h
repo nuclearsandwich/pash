@@ -5,7 +5,7 @@
 #define MAX_STRING_LENGTH 256
 
 /* Different types of tokens!!!! */
-typedef enum { COMMAND, VALUE, VARIABLE } node_types;
+typedef enum { COMMAND, VARASSIGN, VALUE, VARIABLE } node_type;
 
 /* Since we have mutually recursive structures, we need to use forward
  * declaration and thus, cannot omit the struct name.
@@ -16,7 +16,7 @@ typedef struct node ast_node;
 
 
 struct node {
-	int type;
+	node_type type;
 	char token[MAX_TOKEN_LENGTH];
 	ast_nodelist *children;
 };
