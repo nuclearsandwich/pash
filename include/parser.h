@@ -4,8 +4,8 @@
 
 /* The parser takes an input array of tokens and builds an
  * Abstract Syntax Tree for the following Grammar
- * Start ::= Command ||VarAssign
- * Command ::= Command | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
+ * Start ::= Command | VarAssign
+ * Command ::= Command [Arglist] | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
  * NegatedCommand ::= ! Command
  * BackgroundCommand ::= Command &
  * BooleanCommand ::= AndedCommand | OrredCommand
@@ -14,7 +14,7 @@
  * Arglist ::= Arg [ Arglist ]
  * Arg ::= Variable | Value
  * Variable ::= $Value
- * VarAssign ::= varname=value
+ * VarAssign ::= varname=Arg
  */
 
 strlist *tokens;

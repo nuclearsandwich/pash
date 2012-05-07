@@ -4,10 +4,15 @@
 #include <sys/wait.h>
 #include "../include/interpreter.h"
 
+/* A Non-zero integer for overwriting environment variables with setenv */
+#define OVERWRITE 1
+
 void interpret(ast_node *root) {
 	if (root->type == COMMAND) {
 		interpret_command(root);
 		return;
+	} else if (root->type == VARASSIGN) {
+		interpret_var_assign(root);
 	}
 	/* Free AST */
 	/* Free tokens */
@@ -41,6 +46,13 @@ void interpret_command(ast_node* command) {
 		waitpid(cmdpid, &cmdstats, 0);
 	}
 	return;
+}
+
+void interpret_var_assign(ast_node *var_assign) {
+	char *varname, *value;
+	varname = var_assign->children->node->token;
+	value = var_assign->children->next->node->token;
+	setenv(varname, value, OVERWRITE);
 }
 
 char *interpret_variable(ast_node *variable) {
