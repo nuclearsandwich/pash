@@ -6,7 +6,9 @@
 /* The interpreter for the sh142 command shell. Works on a tree of ASTNodes */
 
 void interpret(ast_node *root);
+int interpret_command_seq(ast_node *command_seq);
 int interpret_command(ast_node *command);
+int interpret_negated_command(ast_node *command);
 int interpret_var_assign(ast_node *var_assign);
 char *interpret_variable(ast_node *variable);
 char *interpret_value(ast_node *value);

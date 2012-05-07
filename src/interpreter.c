@@ -10,10 +10,10 @@
 
 void interpret(ast_node *root) {
 	int exit_status;
-	if (root->type == COMMAND) {
-		exit_status = interpret_command(root);
-	} else if (root->type == VARASSIGN) {
+	if (root->type == VARASSIGN) {
 		exit_status = interpret_var_assign(root);
+	} else {
+		exit_status = interpret_command_seq(root);
 	}
 
 	fifo_push(MAX_SAVED_EXITSTATUSES, exitstatuses, exitstatus_head, exit_status);
@@ -21,6 +21,19 @@ void interpret(ast_node *root) {
 	/* Free AST */
 	/* Free tokens */
 	return;
+}
+
+int interpret_command_seq(ast_node *command_seq) {
+	int exit_status = 99;
+	switch (command_seq->type) {
+		case NEGATED_COMMAND:
+			exit_status = interpret_negated_command(command_seq);
+			break;
+		case COMMAND:
+			exit_status = interpret_command(command_seq);
+			break;
+	}
+	return exit_status;
 }
 
 int interpret_command(ast_node* command) {
@@ -56,6 +69,16 @@ int interpret_command(ast_node* command) {
 		waitpid(cmdpid, &cmdstats, 0);
 	}
 	return WEXITSTATUS(cmdstats);
+}
+
+int interpret_negated_command(ast_node *command) {
+	int command_status;
+	command_status = interpret_command(command);
+	if (command_status == 0) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 int interpret_var_assign(ast_node *var_assign) {

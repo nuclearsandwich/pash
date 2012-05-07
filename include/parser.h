@@ -5,12 +5,13 @@
 /* The parser takes an input array of tokens and builds an
  * Abstract Syntax Tree for the following Grammar
  * Start ::= Command | VarAssign
- * Command ::= Command [Arglist] | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
- * NegatedCommand ::= ! Command
- * BackgroundCommand ::= Command &
+ * CommandSequence ::= Command [Arglist] | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
+ * Command
+ * NegatedCommand ::= ! CommandSequence
+ * BackgroundCommand ::= CommandSequence &
  * BooleanCommand ::= AndedCommand | OrredCommand
- * AndedCommand ::= Command && Command
- * OrredCommand ::= Command || Commmand
+ * AndedCommand ::= CommandSequence && CommandSequence
+ * OrredCommand ::= CommandSequence || CommandSequence
  * Arglist ::= Arg [ Arglist ]
  * Arg ::= Variable | Value
  * Variable ::= $Value
@@ -21,8 +22,10 @@ strlist *tokens;
 
 /* Actual parsing functions */
 ast_node *parse(void);
+ast_node *parse_command_seq(void);
 ast_node *parse_var_assign(int eqlidx);
 ast_node *parse_command(void);
+ast_node *parse_negated_command(void);
 ast_nodelist *parse_arglist(void);
 ast_node *parse_arg(void);
 ast_node *parse_variable(void);

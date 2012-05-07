@@ -6,7 +6,9 @@
 #define MAX_SAVED_EXITSTATUSES 10
 
 /* Different types of tokens!!!! */
-typedef enum { COMMAND, VARASSIGN, VALUE, VARIABLE } node_type;
+typedef enum {
+	VARASSIGN, VALUE, VARIABLE, COMMAND, NEGATED_COMMAND
+} node_type;
 
 /* Since we have mutually recursive structures, we need to use forward
  * declaration and thus, cannot omit the struct name.

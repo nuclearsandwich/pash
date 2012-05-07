@@ -8,6 +8,14 @@ ast_node *parse() {
 	if ((eql = contains_eql(tokens->str)) != -1) {
 		return parse_var_assign(eql);
 	} else {
+		return parse_command_seq();
+	}
+}
+
+ast_node *parse_command_seq() {
+	if (strcmp(tokens->str, "!") == 0) {
+		return parse_negated_command();
+	} else {
 		return parse_command();
 	}
 }
@@ -20,6 +28,16 @@ ast_node *parse_command() {
 	command->children = parse_arglist();
 	return command;
 }
+
+ast_node *parse_negated_command() {
+	ast_node *negated_command;
+	strip_head();
+	negated_command = parse_command();
+	negated_command->type = NEGATED_COMMAND;
+	return negated_command;
+}
+
+
 
 ast_nodelist *parse_arglist() {
 	ast_nodelist *head, *tail;
