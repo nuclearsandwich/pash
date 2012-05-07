@@ -13,6 +13,15 @@
 
 int main() {
 	char *input;
+	int i;
+
+	/* Set up exit status FIFO. */
+
+	exitstatus_head = malloc(sizeof(int));
+	*exitstatus_head = 0;
+	for (i = 0; i < MAX_SAVED_EXITSTATUSES; i++) {
+		exitstatuses[i] = UNSET_STATUS;
+	}
 	while(1) {
 		input = readline(PROMPT_STRING);
 		/* Break out when the user exits. */

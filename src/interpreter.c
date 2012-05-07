@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -8,18 +9,21 @@
 #define OVERWRITE 1
 
 void interpret(ast_node *root) {
+	int exit_status;
 	if (root->type == COMMAND) {
-		interpret_command(root);
-		return;
+		exit_status = interpret_command(root);
 	} else if (root->type == VARASSIGN) {
-		interpret_var_assign(root);
+		exit_status = interpret_var_assign(root);
 	}
+
+	fifo_push(MAX_SAVED_EXITSTATUSES, exitstatuses, exitstatus_head, exit_status);
+	set_exitstatuses();
 	/* Free AST */
 	/* Free tokens */
 	return;
 }
 
-void interpret_command(ast_node* command) {
+int interpret_command(ast_node* command) {
 	int cmdstats, argc = 0;
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
@@ -47,14 +51,14 @@ void interpret_command(ast_node* command) {
 	} else {
 		waitpid(cmdpid, &cmdstats, 0);
 	}
-	return;
+	return WEXITSTATUS(cmdstats);
 }
 
-void interpret_var_assign(ast_node *var_assign) {
+int interpret_var_assign(ast_node *var_assign) {
 	char *varname, *value;
 	varname = var_assign->children->node->token;
 	value = var_assign->children->next->node->token;
-	setenv(varname, value, OVERWRITE);
+	return setenv(varname, value, OVERWRITE);
 }
 
 char *interpret_variable(ast_node *variable) {
@@ -70,5 +74,23 @@ char *interpret_variable(ast_node *variable) {
 
 char *interpret_value(ast_node *value) {
 	return value->token;
+}
+
+void set_exitstatuses() {
+	int i, status;
+	char var[2]; /* Only need 3 characters. Since statuses range from 0-255. */
+	char val[3]; /* Only need 3 characters. Since statuses range from 0-255. */
+	for (i = 0; i < MAX_SAVED_EXITSTATUSES; i++) {
+		sprintf(var, "?%1d", i);
+		status = fifo_peek(MAX_SAVED_EXITSTATUSES, exitstatuses,
+				exitstatus_head, i);
+		if (status != UNSET_STATUS) {
+			sprintf(val, "%3d", status);
+			setenv(var, val, OVERWRITE);
+		} else {
+			unsetenv(var);
+		}
+	}
+	return;
 }
 

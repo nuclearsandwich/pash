@@ -3,6 +3,7 @@
 /* The maximum size of a single token. */
 #define MAX_TOKEN_LENGTH 64
 #define MAX_STRING_LENGTH 256
+#define MAX_SAVED_EXITSTATUSES 10
 
 /* Different types of tokens!!!! */
 typedef enum { COMMAND, VARASSIGN, VALUE, VARIABLE } node_type;
