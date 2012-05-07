@@ -16,6 +16,7 @@ ast_node *parse_command() {
 	ast_node *command = malloc(sizeof(ast_node));
 	command->type = COMMAND;
 	strncpy(command->token, tokens->str, MAX_TOKEN_LENGTH);
+	strip_head();
 	command->children = parse_arglist();
 	return command;
 }

@@ -24,9 +24,11 @@ void interpret_command(ast_node* command) {
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
 	ast_nodelist *arg = command->children;
+	
 	/* Build the values to pass to execvp */
 	argv[argc] = interpret_value(command);
 	++argc;
+	
 	while (arg != NULL) {
 		if (arg->node->type == VARIABLE) {
 			argv[argc] = interpret_variable(arg->node);
