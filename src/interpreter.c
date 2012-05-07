@@ -24,7 +24,7 @@ void interpret(ast_node *root) {
 }
 
 int interpret_command(ast_node* command) {
-	int cmdstats, argc = 0;
+	int cmdstats, argc = 0, execerr;
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
 	ast_nodelist *arg = command->children;
@@ -47,7 +47,11 @@ int interpret_command(ast_node* command) {
 	argv[argc] = NULL;
 	cmdpid = fork();
 	if (!cmdpid)  {
-		execvp(command->token, argv);
+		execerr = execvp(command->token, argv);
+		if (execerr == -1) {
+			fprintf(stderr, "sh142: %s: command not found.\n", argv[0]);
+			exit(127);
+		}
 	} else {
 		waitpid(cmdpid, &cmdstats, 0);
 	}
