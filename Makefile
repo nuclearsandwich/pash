@@ -14,7 +14,7 @@ testutils: $(patsubst $(UTIL_DIR)/$(SRC_DIR)/%.c,$(UTIL_DIR)/%,$(wildcard $(UTIL
 
 examples: $(patsubst examples/$(SRC_DIR)/%.c,examples/%,$(wildcard examples/$(SRC_DIR)/*.c))
 
-dependencies: $(INC_DIR)/tokenizer.h $(INC_DIR)/parser.h $(INC_DIR)/interpreter.h $(INC_DIR)/fifo.h $(OBJ_DIR)/tokenizer.o $(OBJ_DIR)/parser.o $(OBJ_DIR)/interpreter.o $(OBJ_DIR)/fifo.o
+dependencies: $(INC_DIR)/tokenizer.h $(INC_DIR)/parser.h $(INC_DIR)/interpreter.h $(INC_DIR)/fifo.h $(INC_DIR)/chomp.h $(OBJ_DIR)/tokenizer.o $(OBJ_DIR)/parser.o $(OBJ_DIR)/interpreter.o $(OBJ_DIR)/fifo.o $(OBJ_DIR)/chomp.o
 
 
 
