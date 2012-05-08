@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "path_lookup.h"
 #include <string.h>
+#include "../../include/path_lookup.h"
 
 int main(int argc, char *argv[])
 {
