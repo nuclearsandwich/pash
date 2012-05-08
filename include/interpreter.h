@@ -10,6 +10,7 @@ int interpret_command_seq(ast_node *command_seq);
 int interpret_command(ast_node *command);
 int interpret_negated_command(ast_node *command);
 int interpret_var_assign(ast_node *var_assign);
+char *interpret_arg(ast_node *arg);
 char *interpret_variable(ast_node *variable);
 char *interpret_value(ast_node *value);
 

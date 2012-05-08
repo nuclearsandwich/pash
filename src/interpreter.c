@@ -26,30 +26,69 @@ int interpret_command(ast_node* command) {
 	int cmdstats, argc = 0, execerr;
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
-	ast_nodelist *arg;
+	FILE *stinf, *stoutf, *sterrf;
+	ast_node *redirect_list;
+	ast_nodelist *arg, *redirect, *remaining_children;
+	remaining_children = command->children;
+	stinf = stoutf = sterrf = NULL;
+
 
 	/* Build the values to pass to execvp */
 	argv[argc] = interpret_value(command);
 	++argc;
 
-	if (command->children != NULL && command->children->node->type == ARGLIST) {
-		arg = command->children->node->children;
+	if (remaining_children != NULL && remaining_children->node->type == ARGLIST) {
+		arg = remaining_children->node->children;
 
 		while (arg != NULL) {
-			if (arg->node->type == VARIABLE) {
-				argv[argc] = interpret_variable(arg->node);
-			} else {
-				argv[argc] = interpret_value(arg->node);
-			}
+			argv[argc] = interpret_arg(arg->node);
 			++argc;
 			arg = arg->next;
 		}
+		remaining_children = remaining_children->next;
+	}
+
+	if (remaining_children != NULL && remaining_children->node->type == REDIRECTLIST) {
+		redirect_list = remaining_children->node;
+		remaining_children = remaining_children->next;
+	} else {
+		redirect_list = NULL;
 	}
 
 	/* Null-terminate the list as per execvp's documentation. */
 	argv[argc] = NULL;
 	cmdpid = fork();
 	if (!cmdpid)  {
+		if (redirect_list != NULL) {
+			redirect = redirect_list->children;
+			while (redirect != NULL) {
+				switch(redirect->node->children->node->type) {
+					case STDIN_REDIRECT:
+						stinf = fopen(
+								interpret_arg(redirect_list->children->node->children->node),"r");
+						break;
+					case STDOUT_REDIRECT:
+						stoutf = fopen(
+								interpret_arg(redirect_list->children->node->children->node), "w");
+						break;
+					case STDERR_REDIRECT:
+						sterrf = fopen(
+								interpret_arg(redirect_list->children->node->children->node), "w");
+						break;
+				}
+			}
+		}
+
+		if (stinf != NULL) {
+			dup2(fileno(stinf), fileno(stdin));
+		}
+		if (stoutf != NULL) {
+			dup2(fileno(stoutf), fileno(stdout));
+		}
+		if (sterrf != NULL) {
+			dup2(fileno(sterrf), fileno(stderr));
+		}
+
 		execerr = execvp(command->token, argv);
 		if (execerr == -1) {
 			fprintf(stderr, "sh142: %s: command not found.\n", argv[0]);
@@ -76,6 +115,14 @@ int interpret_var_assign(ast_node *var_assign) {
 	varname = var_assign->children->node->token;
 	value = var_assign->children->next->node->token;
 	return setenv(varname, value, OVERWRITE);
+}
+
+char *interpret_arg(ast_node *arg) {
+	if (arg->type == VARIABLE) {
+		return interpret_variable(arg);
+	} else {
+		return interpret_value(arg);
+	}
 }
 
 char *interpret_variable(ast_node *variable) {

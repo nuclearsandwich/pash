@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include "../include/parser.h"
 
@@ -97,14 +98,14 @@ ast_node *parse_redirect_list() {
 
 ast_node *parse_redirect() {
 	int redirect_type;
-	ast_node *redirect;
+	ast_node *arg, *redirect;
 	if (tokens == NULL || !is_redirect_token()) {
 		return NULL;
 	}
 
 	redirect_type = is_redirect_token();
 	strip_head();
-	redirect = parse_arg();
+	arg = parse_arg();
 	strip_head();
 	
 	switch (redirect_type) {
@@ -118,6 +119,10 @@ ast_node *parse_redirect() {
 			redirect->type = STDERR_REDIRECT;
 			break;
 	}
+
+	redirect->children = malloc(sizeof(ast_nodelist));
+	redirect->children->node = arg;
+	redirect->children->next = NULL;
 	return redirect;
 }
 
@@ -188,7 +193,7 @@ int contains_eql(char *str) {
 
 int is_special_token() {
 	/* Piggyback off redirect helper. */
-	if (is_redirect_token() == -1) {
+	if (is_redirect_token()) {
 		return 1;
 	}
 
@@ -214,5 +219,10 @@ int is_redirect_token() {
 	} else {
 		return 0;
 	}
+}
+
+void parser_error() {
+	fprintf(stderr, "Parser error\n");
+	return;
 }
 

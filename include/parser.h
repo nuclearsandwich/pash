@@ -42,5 +42,6 @@ void strip_head(void);
 int contains_eql(char *str);
 int is_special_token(void);
 int is_redirect_token(void);
+void parser_error(void);
 
 
