@@ -122,6 +122,8 @@ int interpret_var_assign(ast_node *var_assign) {
 char *interpret_arg(ast_node *arg) {
 	if (arg->type == VARIABLE) {
 		return interpret_variable(arg);
+	} else if (arg->type == DATA_VARIABLE) {
+		return interpret_data_variable(arg);
 	} else {
 		return interpret_value(arg);
 	}
@@ -136,6 +138,10 @@ char *interpret_variable(ast_node *variable) {
 		strncpy(value, "", MAX_STRING_LENGTH);
 	}
 	return value;
+}
+
+char *interpret_data_variable(ast_node *data_variable) {
+	return resolve_data(data_variable->token);
 }
 
 char *interpret_value(ast_node *value) {

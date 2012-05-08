@@ -148,6 +148,10 @@ ast_node *parse_arg() {
 		return parse_variable_expression();
 	}
 
+	if (tokens->str[0] == '#' && tokens->str[1] == 'D' && tokens->str[2] == ':') {
+		return parse_data_variable();
+	}
+
 	return parse_value();
 }
 
@@ -170,6 +174,17 @@ ast_node *parse_variable_expression() {
 	return variable;
 }
 
+ast_node *parse_data_variable() {
+	ast_node *data_variable;
+	int i, varlen = strlen(tokens->str);
+	data_variable = malloc(sizeof(ast_node));
+	data_variable->type = DATA_VARIABLE;
+	for (i = 0; i < varlen; i++) {
+	 data_variable->token[i] = tokens->str[i + 3];
+	}
+	return data_variable;
+}
+
 ast_node *parse_var_assign(int eqlidx) {
 	ast_node *var_assign = malloc(sizeof(ast_node));
 	ast_nodelist *varname = malloc(sizeof(ast_nodelist));
@@ -186,7 +201,6 @@ ast_node *parse_var_assign(int eqlidx) {
 }
 
 ast_node *parse_network_command(int colonidx) {
-	ast_node *network_command;
 	strlist *ssh_token, *hostname_token;
 	/* Insert new tokens for the ssh cmd and hostname. */
 	ssh_token = malloc(sizeof(strlist));

@@ -1,8 +1,9 @@
 #ifndef SH142TYPES
 #include "sh142types.h"
 #endif
-
+#include "path_lookup.h"
 #include "fifo.h"
+
 /* The interpreter for the sh142 command shell. Works on a tree of ASTNodes */
 
 void interpret(ast_node *root);
@@ -12,6 +13,7 @@ int interpret_negated_command(ast_node *command);
 int interpret_var_assign(ast_node *var_assign);
 char *interpret_arg(ast_node *arg);
 char *interpret_variable(ast_node *variable);
+char *interpret_data_variable(ast_node* data_variable);
 char *interpret_value(ast_node *value);
 
 /* Variables for the Exit Status FIFO. */
