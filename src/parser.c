@@ -13,13 +13,38 @@ ast_node *parse() {
 	return root;
 }
 
+/* Copy the current token as the name/path to the command to be run.
+ * Then check if there are any regular tokens to accept as arguments. */
 ast_node *parse_command() {
 	ast_node *command = malloc(sizeof(ast_node));
+	ast_nodelist *tail_child = NULL;
 	command->type = COMMAND;
 	strncpy(command->token, tokens->str, MAX_TOKEN_LENGTH);
 	strip_head();
-	command->children = malloc(sizeof(ast_nodelist));
-	command->children->node = parse_arg_list();
+
+	/* Build ArgList if any. */
+	if (tokens != NULL && !is_special_token()) {
+		command->children = malloc(sizeof(ast_nodelist));
+		command->children->node = parse_arg_list();
+		command->children->next = NULL;
+		/* Set the last child for appending redirects or chains. */
+		tail_child = command->children;
+	}
+
+	/* Build RedirectList if any. */
+	if (tokens != NULL && is_redirect_token()) {
+		if (command->children == NULL) {
+			command->children = malloc(sizeof(ast_nodelist));
+			command->children->node = parse_redirect_list();
+			command->children->next = NULL;
+		} else {
+			tail_child->next = malloc(sizeof(ast_nodelist));
+			tail_child = tail_child->next;
+			tail_child->node = parse_redirect_list();
+			tail_child->next = NULL;
+		}
+	}
+
 	return command;
 }
 
@@ -27,6 +52,7 @@ ast_node *parse_arg_list() {
 	ast_node *arg_list = malloc(sizeof(ast_node)), *arg_node;
 	ast_nodelist *head, *tail;
 	head = tail = malloc(sizeof(ast_nodelist));
+	arg_list->type = ARGLIST;
 	arg_list->children = head;
 	arg_node = parse_arg();
 	tail->node = arg_node;
@@ -45,6 +71,56 @@ ast_node *parse_arg_list() {
 	}
 	return arg_list;
 }
+
+ast_node *parse_redirect_list() {
+	ast_node *redirect, *redirect_list = malloc(sizeof(ast_node));
+	ast_nodelist *tail_child;
+	redirect_list->type = REDIRECTLIST;
+	redirect = parse_redirect();
+	if (redirect != NULL) {
+		redirect_list->children = malloc(sizeof(ast_node));
+		redirect_list->children->node = redirect;
+		redirect_list->children->next = NULL;
+		tail_child = redirect_list->children;
+		redirect = parse_redirect();
+	}
+
+	while (redirect != NULL) {
+		tail_child->next = malloc(sizeof(ast_nodelist));
+		tail_child = tail_child->next;
+		tail_child->node = redirect;
+		tail_child->next = NULL;
+		redirect = parse_redirect();
+	}
+	return redirect_list;
+}
+
+ast_node *parse_redirect() {
+	int redirect_type;
+	ast_node *redirect;
+	if (tokens == NULL || !is_redirect_token()) {
+		return NULL;
+	}
+
+	redirect_type = is_redirect_token();
+	strip_head();
+	redirect = parse_arg();
+	strip_head();
+	
+	switch (redirect_type) {
+		case 4:
+			redirect->type = STDIN_REDIRECT;
+			break;
+		case 1:
+			redirect->type = STDOUT_REDIRECT;
+			break;
+		case 2:
+			redirect->type = STDERR_REDIRECT;
+			break;
+	}
+	return redirect;
+}
+
 
 ast_node *parse_arg() {
 	if (tokens == NULL || is_special_token()) {
@@ -111,6 +187,11 @@ int contains_eql(char *str) {
 }
 
 int is_special_token() {
+	/* Piggyback off redirect helper. */
+	if (is_redirect_token() == -1) {
+		return 1;
+	}
+
 	if (strcmp(tokens->str, "&&") == 0) {
 		return 1;
 	} else if (strcmp(tokens->str, "||") == 0) {
@@ -120,4 +201,18 @@ int is_special_token() {
 	}
 }
 
+/* Returns 4 if stdin redirect, 1 if stdout, 2 if stderr or 0 if not
+ * a redirect.r
+ */
+int is_redirect_token() {
+	if (strcmp(tokens->str, "<") == 0) {
+		return 4;
+	} else if (strcmp(tokens->str, ">") == 0) {
+		return 1;
+	} else if (strcmp(tokens->str, "2>") == 0) {
+		return 2;
+	} else {
+		return 0;
+	}
+}
 

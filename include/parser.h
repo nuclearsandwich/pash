@@ -12,14 +12,14 @@
  * VariableExpression ::= [Arg]'$'Value[Arg]
  * VarAssign          ::= Value'='Arg
  * // Not Yet Implemented //
- * Chain              ::= AndedCommand | OrredCommand
- * AndedCommand       ::= '&&' Command
- * OrredCommand       ::= '||' Command
  * RedirectList       ::= Redirect [RedirectList]
  * Redirect           ::= StdinRedirect | StdoutRedirect | StderrRedirect
  * StdinRedirect      ::= '<' Arg
  * StdoutRedirect     ::= '>' Arg
  * StderrRedirect     ::= '2>' Arg
+ * Chain              ::= AndedCommand | OrredCommand
+ * AndedCommand       ::= '&&' Command
+ * OrredCommand       ::= '||' Command
  * BackgroundKey      ::= '&'
  * NetworkCommand     ::= NodeName':'Command
  */
@@ -34,10 +34,13 @@ ast_node *parse_arg(void);
 ast_node *parse_var_assign(int eqlidx);
 ast_node *parse_variable_expression(void);
 ast_node *parse_value(void);
+ast_node *parse_redirect_list(void);
+ast_node *parse_redirect(void);
 
 /* Helper functions */
 void strip_head(void);
 int contains_eql(char *str);
 int is_special_token(void);
+int is_redirect_token(void);
 
 
