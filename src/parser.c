@@ -57,10 +57,16 @@ ast_node *parse_arg_list() {
 	arg_list->children = head;
 	arg_node = parse_arg();
 	tail->node = arg_node;
-	strip_head();
+	tail->next = NULL;
+
+	if (arg_node != NULL) {
+		strip_head();
+	}
 
 	arg_node = parse_arg();
-	strip_head();
+	if (arg_node != NULL) {
+		strip_head();
+	}
 
 	while (arg_node != NULL) {
 		tail->next = malloc(sizeof(ast_nodelist));
@@ -68,7 +74,9 @@ ast_node *parse_arg_list() {
 		tail->node = arg_node;
 		tail->next = NULL;
 		arg_node = parse_arg();
-		strip_head();
+		if (arg_node != NULL) {
+			strip_head();
+		}
 	}
 	return arg_list;
 }
@@ -108,6 +116,11 @@ ast_node *parse_redirect() {
 	arg = parse_arg();
 	strip_head();
 	
+	redirect = malloc(sizeof(ast_node));
+	redirect->children = malloc(sizeof(ast_nodelist));
+	redirect->children->node = arg;
+	redirect->children->next = NULL;
+
 	switch (redirect_type) {
 		case 4:
 			redirect->type = STDIN_REDIRECT;
@@ -120,9 +133,6 @@ ast_node *parse_redirect() {
 			break;
 	}
 
-	redirect->children = malloc(sizeof(ast_nodelist));
-	redirect->children->node = arg;
-	redirect->children->next = NULL;
 	return redirect;
 }
 
@@ -141,6 +151,7 @@ ast_node *parse_arg() {
 
 ast_node *parse_value() {
 	ast_node *value = malloc(sizeof(ast_node));
+	value->children = NULL;
 	value->type = VALUE;
 	strncpy(value->token, tokens->str, MAX_TOKEN_LENGTH);
 	return value;
@@ -150,6 +161,7 @@ ast_node *parse_variable_expression() {
 	int i, varlen = strlen(tokens->str);
 	ast_node *variable = malloc(sizeof(ast_node));
 	variable->type = VARIABLE;
+	variable->children = NULL;
 	for (i = 0; i < varlen; i++) {
 		variable->token[i] = tokens->str[i + 1];
 	}
