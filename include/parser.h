@@ -18,8 +18,8 @@
  * StderrRedirect     ::= '2>' Arg
  * NetworkCommand     ::= NodeName':'Command
  * NodeName           ::= Value
- * // Not Yet Implemented //
  * DataVariable       ::= #D:Value
+ * // Not Yet Implemented //
  * Chain              ::= AndedCommand | OrredCommand
  * AndedCommand       ::= '&&' Command
  * OrredCommand       ::= '||' Command
@@ -40,6 +40,7 @@ ast_node *parse_value(void);
 ast_node *parse_redirect_list(void);
 ast_node *parse_redirect(void);
 ast_node *parse_network_command(int colonidx);
+ast_node *parse_background_key();
 
 
 /* Helper functions */
@@ -48,6 +49,7 @@ int contains_eql(char *str);
 int contains_colon(char *str);
 int is_special_token(void);
 int is_redirect_token(void);
+int is_background_key(void);
 void parser_error(void);
 
 

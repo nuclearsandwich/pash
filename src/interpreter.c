@@ -27,7 +27,7 @@ int interpret_command(ast_node* command) {
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
 	FILE *stinf, *stoutf, *sterrf;
-	ast_node *redirect_list;
+	ast_node *redirect_list, *background_key = NULL;
 	ast_nodelist *arg, *redirect, *remaining_children;
 	remaining_children = command->children;
 	stinf = stoutf = sterrf = NULL;
@@ -53,6 +53,10 @@ int interpret_command(ast_node* command) {
 		remaining_children = remaining_children->next;
 	} else {
 		redirect_list = NULL;
+	}
+
+	if (remaining_children != NULL && remaining_children->node->type == BACKGROUND_KEY) {
+		background_key = remaining_children->node;
 	}
 
 	/* Null-terminate the list as per execvp's documentation. */
@@ -97,9 +101,15 @@ int interpret_command(ast_node* command) {
 			exit(127);
 		}
 	} else {
-		waitpid(cmdpid, &cmdstats, 0);
+		if (background_key == NULL) {
+			waitpid(cmdpid, &cmdstats, 0);
+		}
 	}
-	return WEXITSTATUS(cmdstats);
+	if (background_key) {
+		return WEXITSTATUS(cmdstats);
+	} else {
+		return 0;
+	}
 }
 
 int interpret_negated_command(ast_node *command) {

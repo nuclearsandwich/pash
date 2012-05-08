@@ -48,6 +48,18 @@ ast_node *parse_command() {
 		}
 	}
 
+	/* Check for Background Key. */
+	if (tokens != NULL && is_background_key()) {
+		if (command->children == NULL) {
+			tail_child = command->children = malloc(sizeof(ast_nodelist));
+		} else {
+			tail_child->next = malloc(sizeof(ast_nodelist));
+			tail_child = tail_child->next;
+		}
+			tail_child->node = parse_background_key();
+			tail_child->next = NULL;
+	}
+
 	return command;
 }
 
@@ -136,6 +148,14 @@ ast_node *parse_redirect() {
 	}
 
 	return redirect;
+}
+
+ast_node *parse_background_key() {
+	strip_head();
+	ast_node *background_key = malloc(sizeof(ast_node));
+	background_key->type = BACKGROUND_KEY;
+	background_key->children = NULL;
+	return background_key;
 }
 
 
@@ -260,8 +280,8 @@ int contains_colon(char *str) {
 
 
 int is_special_token() {
-	/* Piggyback off redirect helper. */
-	if (is_redirect_token()) {
+	/* Piggyback off other helpers. */
+	if (is_redirect_token() || is_background_key()) {
 		return 1;
 	}
 
@@ -284,6 +304,14 @@ int is_redirect_token() {
 		return 1;
 	} else if (strcmp(tokens->str, "2>") == 0) {
 		return 2;
+	} else {
+		return 0;
+	}
+}
+
+int is_background_key() {
+	if (strcmp(tokens->str, "&") == 0) {
+		return 1;
 	} else {
 		return 0;
 	}
