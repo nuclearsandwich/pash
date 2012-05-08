@@ -12,7 +12,9 @@ void interpret(ast_node *root) {
 	int exit_status;
 	if (root->type == VARASSIGN) {
 		exit_status = interpret_var_assign(root);
-	} else {
+	} else if (root->type == NEGATED_COMMAND) {
+		exit_status = interpret_negated_command(root);
+	}else {
 		exit_status = interpret_command(root);
 	}
 
@@ -112,9 +114,9 @@ int interpret_command(ast_node* command) {
 	}
 }
 
-int interpret_negated_command(ast_node *command) {
+int interpret_negated_command(ast_node *negated_command) {
 	int command_status;
-	command_status = interpret_command(command);
+	command_status = interpret_command(negated_command->children->node);
 	if (command_status == 0) {
 		return 1;
 	} else {

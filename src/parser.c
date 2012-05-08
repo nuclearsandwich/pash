@@ -10,6 +10,8 @@ ast_node *parse() {
 		root =  parse_var_assign(eql);
 	} else if ((colon = contains_colon(tokens->str)) != -1) {
 		root = parse_network_command(colon);
+	} else if (is_negation(tokens->str)) {
+		root = parse_negated_command();
 	} else {
 		root = parse_command();
 	}
@@ -205,6 +207,16 @@ ast_node *parse_data_variable() {
 	return data_variable;
 }
 
+ast_node *parse_negated_command() {
+	ast_node *negated_command = malloc(sizeof(ast_node));
+	negated_command->type = NEGATED_COMMAND;
+	strip_head();
+	negated_command->children = malloc(sizeof(ast_nodelist));
+	negated_command->children->next = NULL;
+	negated_command->children->node = parse_command();
+	return negated_command;
+}
+
 ast_node *parse_var_assign(int eqlidx) {
 	ast_node *var_assign = malloc(sizeof(ast_node));
 	ast_nodelist *varname = malloc(sizeof(ast_nodelist));
@@ -311,6 +323,14 @@ int is_redirect_token() {
 
 int is_background_key() {
 	if (strcmp(tokens->str, "&") == 0) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+int is_negation(char *str) {
+	if (strcmp(str, "!") == 0) {
 		return 1;
 	} else {
 		return 0;

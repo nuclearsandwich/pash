@@ -8,7 +8,8 @@
 /* Different types of tokens!!!! */
 typedef enum {
 	VARASSIGN, VALUE, VARIABLE, COMMAND, ARGLIST, REDIRECTLIST, STDIN_REDIRECT,
-	STDOUT_REDIRECT, STDERR_REDIRECT, DATA_VARIABLE, BACKGROUND_KEY
+	STDOUT_REDIRECT, STDERR_REDIRECT, DATA_VARIABLE, BACKGROUND_KEY,
+	NEGATED_COMMAND
 } node_type;
 
 /* Since we have mutually recursive structures, we need to use forward
