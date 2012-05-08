@@ -4,9 +4,10 @@
 
 /* The parser takes an input array of tokens and builds an
  * Abstract Syntax Tree for the following Grammar
- * Start ::= Command | VarAssign
- * CommandSequence ::= Command [Arglist] | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
- * Command
+ *
+ * Start ::= CommandSequence | VarAssign
+ * CommandSequence ::= Command | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
+ * Command ::= Value [ Arglist ]
  * NegatedCommand ::= ! CommandSequence
  * BackgroundCommand ::= CommandSequence &
  * BooleanCommand ::= AndedCommand | OrredCommand

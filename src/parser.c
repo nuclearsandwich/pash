@@ -32,7 +32,7 @@ ast_node *parse_command() {
 ast_node *parse_negated_command() {
 	ast_node *negated_command;
 	strip_head();
-	negated_command = parse_command();
+	negated_command = parse_command_seq();
 	negated_command->type = NEGATED_COMMAND;
 	return negated_command;
 }
