@@ -61,8 +61,9 @@ int interpret_command(ast_node* command) {
 	if (!cmdpid)  {
 		if (redirect_list != NULL) {
 			redirect = redirect_list->children;
+
 			while (redirect != NULL) {
-				switch(redirect->node->children->node->type) {
+				switch(redirect->node->type) {
 					case STDIN_REDIRECT:
 						stinf = fopen(
 								interpret_arg(redirect_list->children->node->children->node),"r");
@@ -76,6 +77,7 @@ int interpret_command(ast_node* command) {
 								interpret_arg(redirect_list->children->node->children->node), "w");
 						break;
 				}
+				redirect = redirect->next;
 			}
 		}
 
