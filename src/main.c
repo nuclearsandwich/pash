@@ -69,7 +69,7 @@ void load_config_files() {
 			if (strstr(lsbuffer, fileext) != NULL) {
 				source_file = fopen(chomp(lsbuffer), "r");
 				while(fgets(sourcebuffer, MAX_STRING_LENGTH, source_file) != NULL) {
-					tokens = tokenize(sourcebuffer);
+					tokens = tokenize(chomp(sourcebuffer));
 					interpret(parse());
 				}
 			}
