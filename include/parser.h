@@ -5,35 +5,39 @@
 /* The parser takes an input array of tokens and builds an
  * Abstract Syntax Tree for the following Grammar
  *
- * Start ::= CommandSequence | VarAssign
- * CommandSequence ::= Command | NegatedCommand | BackgroundCommand | BooleanCommand | PipedCommand
- * Command ::= Value [ Arglist ]
- * NegatedCommand ::= ! CommandSequence
- * BackgroundCommand ::= CommandSequence &
- * BooleanCommand ::= AndedCommand | OrredCommand
- * AndedCommand ::= CommandSequence && CommandSequence
- * OrredCommand ::= CommandSequence || CommandSequence
- * Arglist ::= Arg [ Arglist ]
- * Arg ::= Variable | Value
- * Variable ::= $Value
- * VarAssign ::= varname=Arg
+ * Start              ::= Command | VarAssign | NetworkCommand
+ * Command            ::= ['!'] Value [ ArgList ] [ RedirectList ] [ Chain ] [BackgroundKey]
+ * ArgList            ::= Arg [ Arglist ]
+ * Arg                ::= VariableExpression | Value
+ * VariableExpression ::= [Arg]'$'Value[Arg]
+ * VarAssign          ::= Value'='Arg
+ * // Not Yet Implemented //
+ * Chain              ::= AndedCommand | OrredCommand
+ * AndedCommand       ::= '&&' Command
+ * OrredCommand       ::= '||' Command
+ * RedirectList       ::= Redirect [RedirectList]
+ * Redirect           ::= StdinRedirect | StdoutRedirect | StderrRedirect
+ * StdinRedirect      ::= '<' Arg
+ * StdoutRedirect     ::= '>' Arg
+ * StderrRedirect     ::= '2>' Arg
+ * BackgroundKey      ::= '&'
+ * NetworkCommand     ::= NodeName':'Command
  */
 
 strlist *tokens;
 
 /* Actual parsing functions */
 ast_node *parse(void);
-ast_node *parse_command_seq(void);
-ast_node *parse_var_assign(int eqlidx);
 ast_node *parse_command(void);
-ast_node *parse_negated_command(void);
-ast_nodelist *parse_arglist(void);
+ast_node *parse_arg_list(void);
 ast_node *parse_arg(void);
-ast_node *parse_variable(void);
+ast_node *parse_var_assign(int eqlidx);
+ast_node *parse_variable_expression(void);
 ast_node *parse_value(void);
 
 /* Helper functions */
 void strip_head(void);
 int contains_eql(char *str);
+int is_special_token(void);
 
 
