@@ -16,9 +16,9 @@
  * StdinRedirect      ::= '<' Arg
  * StdoutRedirect     ::= '>' Arg
  * StderrRedirect     ::= '2>' Arg
- * // Not Yet Implemented //
  * NetworkCommand     ::= NodeName':'Command
  * NodeName           ::= Value
+ * // Not Yet Implemented //
  * DataVariable       ::= #D:Value
  * Chain              ::= AndedCommand | OrredCommand
  * AndedCommand       ::= '&&' Command
