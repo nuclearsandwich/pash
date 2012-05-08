@@ -22,9 +22,9 @@ char* searchPath(char* inputPath, char* inputExecutableName)
         {
         	closedir(directory); // close the file handle
             qualifiedPath = (char*) malloc(strlen(inputPath) + strlen(inputExecutableName)); // leave one extra space for the /
-            strcat(qualifiedPath, inputPath);
+						strcpy(qualifiedPath, inputPath);
             strcat(qualifiedPath, "/");
-            strcat(qualifiedPath, inputExecutableName);           
+            strcat(qualifiedPath, inputExecutableName);
             return qualifiedPath; // return the fully qualified path to the program
         }
 	  }
