@@ -4,10 +4,12 @@
 #include "../include/parser.h"
 
 ast_node *parse() {
-	int eql;
+	int eql, colon;
 	ast_node *root;
 	if ((eql = contains_eql(tokens->str)) != -1) {
 		root =  parse_var_assign(eql);
+	} else if ((colon = contains_colon(tokens->str)) != -1) {
+		root = parse_network_command(colon);
 	} else {
 		root = parse_command();
 	}
@@ -183,6 +185,32 @@ ast_node *parse_var_assign(int eqlidx) {
 	return var_assign;
 }
 
+ast_node *parse_network_command(int colonidx) {
+	ast_node *network_command;
+	strlist *ssh_token, *hostname_token;
+	/* Insert new tokens for the ssh cmd and hostname. */
+	ssh_token = malloc(sizeof(strlist));
+	hostname_token = malloc(sizeof(strlist));
+	strncpy(ssh_token->str, "ssh", MAX_TOKEN_LENGTH);
+
+	/* Nullify the colon to split the string. Take the first half as hostname. */
+	tokens->str[colonidx] = '\0';
+	strncpy(hostname_token->str, tokens->str, MAX_TOKEN_LENGTH);
+
+	/* Copy the latter (command) portion of the original head of tokens to the
+	 * front of the string.
+	 */
+	strncpy(tokens->str, &tokens->str[colonidx+1], MAX_TOKEN_LENGTH - (colonidx + 1));
+	/* Set the ssh token to point to the hostname token and the hostname token
+	 * to point to the orginal command. Then make the ssh token the head of the
+	 * tokens linked list.
+	 */
+	ssh_token->next = hostname_token;
+	hostname_token->next = tokens;
+	tokens = ssh_token;
+	return parse_command();
+}
+
 /* Helper Functions */
 void strip_head() {
 	if (tokens == NULL) {
@@ -202,6 +230,20 @@ int contains_eql(char *str) {
 	}
 	return -1;
 }
+
+/* Returns the index of the colon character within the string or
+ * -1 if none is present.
+ */
+int contains_colon(char *str) {
+	int i;
+	for (i = 0; i < strlen(str); i++) {
+		if (str[i] == ':') {
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 int is_special_token() {
 	/* Piggyback off redirect helper. */

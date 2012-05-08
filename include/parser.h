@@ -11,17 +11,19 @@
  * Arg                ::= VariableExpression | Value
  * VariableExpression ::= [Arg]'$'Value[Arg]
  * VarAssign          ::= Value'='Arg
- * // Not Yet Implemented //
  * RedirectList       ::= Redirect [RedirectList]
  * Redirect           ::= StdinRedirect | StdoutRedirect | StderrRedirect
  * StdinRedirect      ::= '<' Arg
  * StdoutRedirect     ::= '>' Arg
  * StderrRedirect     ::= '2>' Arg
+ * // Not Yet Implemented //
+ * NetworkCommand     ::= NodeName':'Command
+ * NodeName           ::= Value
+ * DataVariable       ::= #D:Value
  * Chain              ::= AndedCommand | OrredCommand
  * AndedCommand       ::= '&&' Command
  * OrredCommand       ::= '||' Command
  * BackgroundKey      ::= '&'
- * NetworkCommand     ::= NodeName':'Command
  */
 
 strlist *tokens;
@@ -36,10 +38,13 @@ ast_node *parse_variable_expression(void);
 ast_node *parse_value(void);
 ast_node *parse_redirect_list(void);
 ast_node *parse_redirect(void);
+ast_node *parse_network_command(int colonidx);
+
 
 /* Helper functions */
 void strip_head(void);
 int contains_eql(char *str);
+int contains_colon(char *str);
 int is_special_token(void);
 int is_redirect_token(void);
 void parser_error(void);
