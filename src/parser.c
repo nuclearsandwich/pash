@@ -2,22 +2,15 @@
 #include <string.h>
 #include "../include/parser.h"
 
-
 ast_node *parse() {
 	int eql;
+	ast_node *root;
 	if ((eql = contains_eql(tokens->str)) != -1) {
-		return parse_var_assign(eql);
+		root =  parse_var_assign(eql);
 	} else {
-		return parse_command_seq();
+		root = parse_command();
 	}
-}
-
-ast_node *parse_command_seq() {
-	if (strcmp(tokens->str, "!") == 0) {
-		return parse_negated_command();
-	} else {
-		return parse_command();
-	}
+	return root;
 }
 
 ast_node *parse_command() {
@@ -25,33 +18,20 @@ ast_node *parse_command() {
 	command->type = COMMAND;
 	strncpy(command->token, tokens->str, MAX_TOKEN_LENGTH);
 	strip_head();
-	command->children = parse_arglist();
+	command->children = malloc(sizeof(ast_nodelist));
+	command->children->node = parse_arg_list();
 	return command;
 }
 
-ast_node *parse_negated_command() {
-	ast_node *negated_command;
-	strip_head();
-	negated_command = parse_command_seq();
-	negated_command->type = NEGATED_COMMAND;
-	return negated_command;
-}
-
-
-
-ast_nodelist *parse_arglist() {
+ast_node *parse_arg_list() {
+	ast_node *arg_list = malloc(sizeof(ast_node)), *arg_node;
 	ast_nodelist *head, *tail;
-	ast_node *arg_node;
-	if (tokens == NULL) {
-		return NULL;
-	}
-	/* Prep the first node */
 	head = tail = malloc(sizeof(ast_nodelist));
-	head->node = parse_arg();
+	arg_list->children = head;
+	arg_node = parse_arg();
+	tail->node = arg_node;
 	strip_head();
-	head->next = NULL;
 
-	/* Prime the while with a new argument */
 	arg_node = parse_arg();
 	strip_head();
 
@@ -63,16 +43,16 @@ ast_nodelist *parse_arglist() {
 		arg_node = parse_arg();
 		strip_head();
 	}
-	return head;
+	return arg_list;
 }
 
 ast_node *parse_arg() {
-	if (tokens == NULL) {
+	if (tokens == NULL || is_special_token()) {
 		return NULL;
 	}
 
 	if (tokens->str[0] == '$') {
-		return parse_variable();
+		return parse_variable_expression();
 	}
 
 	return parse_value();
@@ -85,7 +65,7 @@ ast_node *parse_value() {
 	return value;
 }
 
-ast_node *parse_variable() {
+ast_node *parse_variable_expression() {
 	int i, varlen = strlen(tokens->str);
 	ast_node *variable = malloc(sizeof(ast_node));
 	variable->type = VARIABLE;
@@ -127,7 +107,17 @@ int contains_eql(char *str) {
 			return i;
 		}
 	}
-
 	return -1;
 }
+
+int is_special_token() {
+	if (strcmp(tokens->str, "&&") == 0) {
+		return 1;
+	} else if (strcmp(tokens->str, "||") == 0) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 

@@ -13,7 +13,7 @@ void interpret(ast_node *root) {
 	if (root->type == VARASSIGN) {
 		exit_status = interpret_var_assign(root);
 	} else {
-		exit_status = interpret_command_seq(root);
+		exit_status = interpret_command(root);
 	}
 
 	fifo_push(MAX_SAVED_EXITSTATUSES, exitstatuses, exitstatus_head, exit_status);
@@ -23,28 +23,17 @@ void interpret(ast_node *root) {
 	return;
 }
 
-int interpret_command_seq(ast_node *command_seq) {
-	int exit_status = 99;
-	switch (command_seq->type) {
-		case NEGATED_COMMAND:
-			exit_status = interpret_negated_command(command_seq);
-			break;
-		case COMMAND:
-			exit_status = interpret_command(command_seq);
-			break;
-	}
-	return exit_status;
-}
-
 int interpret_command(ast_node* command) {
 	int cmdstats, argc = 0, execerr;
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
-	ast_nodelist *arg = command->children;
-	
+	ast_nodelist *arg, *arg_list = command->children;
+
 	/* Build the values to pass to execvp */
 	argv[argc] = interpret_value(command);
 	++argc;
+
+	arg = arg_list->node->children;
 	
 	while (arg != NULL) {
 		if (arg->node->type == VARIABLE) {
