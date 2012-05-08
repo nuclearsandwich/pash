@@ -18,8 +18,7 @@ void interpret(ast_node *root) {
 
 	fifo_push(MAX_SAVED_EXITSTATUSES, exitstatuses, exitstatus_head, exit_status);
 	set_exitstatuses();
-	/* Free AST */
-	/* Free tokens */
+	free_ast(root);
 	return;
 }
 
@@ -27,22 +26,24 @@ int interpret_command(ast_node* command) {
 	int cmdstats, argc = 0, execerr;
 	pid_t cmdpid;
 	char *argv[MAX_TOKEN_LENGTH];
-	ast_nodelist *arg, *arg_list = command->children;
+	ast_nodelist *arg;
 
 	/* Build the values to pass to execvp */
 	argv[argc] = interpret_value(command);
 	++argc;
 
-	arg = arg_list->node->children;
-	
-	while (arg != NULL) {
-		if (arg->node->type == VARIABLE) {
-			argv[argc] = interpret_variable(arg->node);
-		} else {
-			argv[argc] = interpret_value(arg->node);
+	if (command->children != NULL && command->children->node->type == ARGLIST) {
+		arg = command->children->node->children;
+
+		while (arg != NULL) {
+			if (arg->node->type == VARIABLE) {
+				argv[argc] = interpret_variable(arg->node);
+			} else {
+				argv[argc] = interpret_value(arg->node);
+			}
+			++argc;
+			arg = arg->next;
 		}
-		++argc;
-		arg = arg->next;
 	}
 
 	/* Null-terminate the list as per execvp's documentation. */
@@ -108,5 +109,25 @@ void set_exitstatuses() {
 		}
 	}
 	return;
+}
+
+void free_ast(ast_node *root) {
+	if (root != NULL) {
+		if (root->children == NULL) {
+			free(root);
+		} else {
+			free_ast_list(root->children);
+		}
+	}
+}
+
+void free_ast_list(ast_nodelist *list) {
+	ast_nodelist *next;
+	while (list != NULL) {
+		next = list->next;
+		free_ast(list->node);
+		free(list);
+		list = next;
+	}
 }
 

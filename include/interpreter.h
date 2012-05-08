@@ -18,3 +18,7 @@ char *interpret_value(ast_node *value);
 int *exitstatus_head;
 int exitstatuses[MAX_SAVED_EXITSTATUSES];
 void set_exitstatuses(void);
+
+/* Cleanup */
+void free_ast(ast_node *root);
+void free_ast_list(ast_nodelist *list);
