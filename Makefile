@@ -8,7 +8,7 @@ UTIL_DIR=test_utils
 LIB_DEPS=-lreadline
 CFLAGS=-Wall -g -I$(INC_DIR)
 
-default: bin/sh142
+default: bin/pash
 
 testutils: $(patsubst $(UTIL_DIR)/$(SRC_DIR)/%.c,$(UTIL_DIR)/%,$(wildcard $(UTIL_DIR)/$(SRC_DIR)/*.c))
 
@@ -23,7 +23,7 @@ examples/%: examples/src/%.c
 
 dylibs: $(DYN_DIR)/test_function.so $(DYN_DIR)/path_lookup.so
 
-$(BIN_DIR)/sh142: $(SRC_DIR)/main.c dependencies
+$(BIN_DIR)/pash: $(SRC_DIR)/main.c dependencies
 	$(CC) obj/* $(LIB_DEPS) $(SRC_DIR)/main.c $(CFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/%.h
@@ -40,7 +40,7 @@ test: testutils cuke
 unit: dylibs
 	ruby -r"rake" -r"rake/testtask" -e"Rake::TestTask.new; Rake::Task[:test].invoke"
 
-cuke: bin/sh142
+cuke: bin/pash
 	cucumber features/ -t ~@skipme
 
 modules.png: modules.dot
@@ -51,7 +51,7 @@ REPORT.pdf: REPORT.latex modules.png
 
 clean:
 	# Cleaning _NEVER_ fails.
-	rm *.o sh142 obj/* bin/* examples/* test_utils/* &>/dev/null && exit 0 || exit 0
+	rm *.o pash obj/* bin/* examples/* test_utils/* &>/dev/null && exit 0 || exit 0
 
 .PHONY: clean cuke test testutils unit default
 

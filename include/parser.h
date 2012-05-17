@@ -1,5 +1,5 @@
-#ifndef SH142TYPES
-#include "./sh142types.h"
+#ifndef PASHTYPES
+#include "./pashtypes.h"
 #endif
 
 /* The parser takes an input array of tokens and builds an

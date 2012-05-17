@@ -99,7 +99,7 @@ int interpret_command(ast_node* command) {
 
 		execerr = execvp(command->token, argv);
 		if (execerr == -1) {
-			fprintf(stderr, "sh142: %s: command not found.\n", argv[0]);
+			fprintf(stderr, "pash: %s: command not found.\n", argv[0]);
 			exit(127);
 		}
 	} else {

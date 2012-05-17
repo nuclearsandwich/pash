@@ -1,5 +1,5 @@
 /* Protect from multiple inclusion */
-#define SH142TYPES
+#define PASHTYPES
 /* The maximum size of a single token. */
 #define MAX_TOKEN_LENGTH 64
 #define MAX_STRING_LENGTH 256

@@ -11,7 +11,7 @@
 #include "../include/interpreter.h"
 
 /* The prompt string printed by Readline */
-#define PROMPT_STRING "sh142$ "
+#define PROMPT_STRING "pash$ "
 
 void load_config_files(void);
 void prepare_fifo(void);
@@ -44,7 +44,7 @@ void load_config_files() {
 	int fd[2];
 	char lsbuffer[MAX_STRING_LENGTH], sourcebuffer[MAX_STRING_LENGTH];
 	FILE *ls_output, *source_file;
-	const char *fileext = ".sh142\n";
+	const char *fileext = ".pash\n";
 
 	pipe(fd);
 	ls_pid = fork();

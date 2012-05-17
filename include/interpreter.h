@@ -1,5 +1,5 @@
-#ifndef SH142TYPES
-#include "sh142types.h"
+#ifndef PASHTYPES
+#include "pashtypes.h"
 #endif
 #include "path_lookup.h"
 #include "fifo.h"
