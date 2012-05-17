@@ -1,4 +1,4 @@
-# sh142 #
+# pash #
 
 *A not-quite-POSIX shell for Unix systems.*
 
