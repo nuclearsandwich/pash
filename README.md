@@ -2,22 +2,22 @@
 
 *A not-quite-POSIX shell for Unix systems.*
 
-Writing this for a class. Who knows when it will be open-sourced. Using
-[Aruba][] to test it.
+![Pash!](http://blog.nuclearsandwich.com/images/pash.png)
+
+This was an assignment. It is now a labor of love. Hence, pash.
 
 ## Development dependencies ##
 
 - A C compiler
 - [Valgrind][] advanced dynamic profiler; a memory leak's worst nightmare.
 - [Aruba][] for advanced CLI testing.
-- [Cucumber][] for automated behavio.ral testing. A dependency of Aruba.
+- [Cucumber][] for automated behavioral testing. A dependency of Aruba.
 - [Ruby][] >= 1.9.2 to run Cucumber.
 - [GNU Make][] because IDEs are for chumps.
 
 [Aruba]: https://github.com/cucumber/aruba
 [Cucumber]: https://github.com/cucumber/cucumber
 [Ruby]: http://ruby-lang.org
-[CTest]: https://github.com/bvdberg/ctest
 [Valgrind]:http://valgrind.org/
 [GNU Make]: http://www.gnu.org/software/make/
 
