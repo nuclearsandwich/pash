@@ -2,7 +2,7 @@
 
 *A not-quite-POSIX shell for Unix systems.*
 
-![Pash!](http://blog.nuclearsandwich.com/images/pash.png)
+![Pash!](http://nuclearsandwich.com/images/pash.png)
 
 This was an assignment. It is now a labor of love. Hence, pash.
 
