@@ -10,29 +10,10 @@ This was an assignment. It is now a labor of love. Hence, pash.
 
 - A C compiler
 - [Valgrind][] advanced dynamic profiler; a memory leak's worst nightmare.
-- [Aruba][] for advanced CLI testing.
-- [Cucumber][] for automated behavioral testing. A dependency of Aruba.
-- [Ruby][] >= 1.9.2 to run Cucumber.
-- [GNU Make][] because IDEs are for chumps.
+- [GNU Make][] for compilation automation.
 
-[Aruba]: https://github.com/cucumber/aruba
-[Cucumber]: https://github.com/cucumber/cucumber
-[Ruby]: http://ruby-lang.org
 [Valgrind]:http://valgrind.org/
 [GNU Make]: http://www.gnu.org/software/make/
-
-Writing Cucumber Specs
-----------------------
-
-Because we're good developers, we're writing pretty comprehensive tests to prove
-or disprove our hypotheses about whether our software works. We've chosen
-Cucumber and Aruba to do this in the most expressive and automated way possible.
-
-For details on the language of Cucumber see existing examples in the `features/`
-directory and the documentation of available "steps"
-[here](https://github.com/cucumber/aruba/blob/master/lib/aruba/cucumber.rb).
-
-
 
 C and UNIX Library Commands of Note
 -----------------------------------
