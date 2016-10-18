@@ -1,5 +1,5 @@
 #ifndef SH142TYPES
-#include "./sh142types.h"
+#include "./pashtypes.h"
 #endif
 
 strlist *tokenize(char *input);
